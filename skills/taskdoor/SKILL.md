@@ -1,12 +1,16 @@
 ---
 name: taskdoor
-description: Work with TaskDoor (a team's tasks, subtasks, comments, files and notifications) through the `taskdoor` CLI. Use when the person mentions TaskDoor, their tasks or workspace, or asks to read, create, update or discuss tasks.
+description: Use when setting up or using the TaskDoor CLI to read, create, update or discuss tasks, subtasks, comments, files or notifications in a team's workspace.
 ---
 
 # TaskDoor
 
 TaskDoor is reached through the `taskdoor` command-line tool. This skill says how to set it up, how to find
 the right command and how to act safely. The commands themselves are described by `taskdoor --help`.
+
+When `taskdoor-create-task` is installed and TaskDoor MCP is already connected, use it for task
+decomposition and responsibility matching through MCP. That workflow does not require installing or
+signing in to the CLI.
 
 ## Setup
 
