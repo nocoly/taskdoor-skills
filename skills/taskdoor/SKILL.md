@@ -32,6 +32,9 @@ Do not change the address, and do not run login again if it fails or times out: 
 `KEYRING_UNAVAILABLE` means this computer's keyring cannot keep the login (no desktop session, a sandbox with
 its own home directory, or access refused): tell the person, then run the same login once more with
 `--credential-store file` added. Where you already know there is no keyring, add it from the start.
+`LOCK_FAILED` or another permission error on the configuration directory almost always means your own sandbox
+may not write there: do not retry the login; ask the person to allow it or to run it outside the sandbox (or set
+`TASKDOOR_CONFIG_DIR` to a directory you can write).
 
 ## Finding commands
 
