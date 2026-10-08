@@ -11,10 +11,11 @@ the right command and how to act safely. The commands themselves are described b
 ## Setup
 
     npm install -g @taskdoor/cli
-    taskdoor login
+    taskdoor login --server <origin> --device-auth
     taskdoor whoami
 
-For a private deployment, sign in with `taskdoor login --server <origin> --device-auth`. Login prints a
+Sign in to the server the person uses: `taskdoor login --server <origin> --device-auth` (for TaskDoor
+itself, `taskdoor login`). The setup page they gave you names the origin. Login prints a
 verification address and a short code: show both to the person exactly as printed, each in a code block of
 its own, and let them approve in their browser. Do not open a browser yourself, and do not run login again
 if it fails or times out: report what it printed. Without a system keyring (`KEYRING_UNAVAILABLE`), add
@@ -39,7 +40,7 @@ Errors are JSON on stderr; the `error` object has the code and message.
 |---|---|---|
 | 0 | success | - |
 | 2 | invalid arguments, or no target workspace | Fix the arguments from `error`. Do not retry unchanged. |
-| 3 | not signed in, or the session expired | Go back to the sign-in step in Setup. |
+| 3 | not signed in, or the session expired | Run `taskdoor auth list` to see which server the active login is for, then sign in to **that** server again with `taskdoor login --server <origin> --device-auth`. Never run a bare `taskdoor login` unless the server is TaskDoor itself: it would sign in to production. |
 | 4 | no permission, or not visible | Tell the person. Do not look for a way around it. |
 | 5 | network or server error | If the outcome may have happened, read first. Retry at most twice. |
 | 6 | conflict or precondition failed | Get the item again, show the person what changed, then decide. |

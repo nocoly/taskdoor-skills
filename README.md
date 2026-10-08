@@ -13,6 +13,8 @@ The skill expects the TaskDoor CLI ([`@taskdoor/cli`](https://www.npmjs.com/pack
     npm install -g @taskdoor/cli
     taskdoor login
 
+For a private or sandbox deployment, add `--server <origin>` to `taskdoor login`.
+
 ## Skills
 
 - [`taskdoor`](skills/taskdoor/SKILL.md): set up the CLI, find commands with `taskdoor --help`, read exit
