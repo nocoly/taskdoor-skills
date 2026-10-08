@@ -11,15 +11,27 @@ the right command and how to act safely. The commands themselves are described b
 ## Setup
 
     npm install -g @taskdoor/cli
-    taskdoor login --server <origin> --device-auth
+    taskdoor login --server <origin>
     taskdoor whoami
 
-Sign in to the server the person uses: `taskdoor login --server <origin> --device-auth` (for TaskDoor
-itself, `taskdoor login`). The setup page they gave you names the origin. Login prints a
-verification address and a short code: show both to the person exactly as printed, each in a code block of
-its own, and let them approve in their browser. Do not open a browser yourself, and do not run login again
-if it fails or times out: report what it printed. Without a system keyring (`KEYRING_UNAVAILABLE`), add
-`--credential-store file`.
+Sign in to the server the person uses: `<origin>` is the address of the setup page they gave you (keeping
+`--server` is right for TaskDoor itself too). Run login so that you can wait for it: it waits up to five
+minutes for the person and then exits by itself.
+
+- **In a browser (the default).** `taskdoor login --server <origin>` opens the person's browser at the
+  TaskDoor sign-in page and prints that address after `Authorize your TaskDoor account at:`. Show the address
+  to the person as a link they can click, exactly as printed, in case no browser window appeared, and tell
+  them to approve in the browser. The page must be opened on this computer: login waits for the browser to
+  come back to it.
+- **Without a browser on this computer** (you run on a remote machine, in a container or over SSH, or the
+  person says the browser cannot be used here): ask the person first, then use
+  `taskdoor login --server <origin> --device-auth`. It prints an address and a short code: show both exactly
+  as printed, each in a code block of its own; the person opens the address on any device and enters the code.
+
+Do not change the address, and do not run login again if it fails or times out: report what it printed.
+`KEYRING_UNAVAILABLE` means this computer's keyring cannot keep the login (no desktop session, a sandbox with
+its own home directory, or access refused): tell the person, then run the same login once more with
+`--credential-store file` added. Where you already know there is no keyring, add it from the start.
 
 ## Finding commands
 
@@ -40,7 +52,7 @@ Errors are JSON on stderr; the `error` object has the code and message.
 |---|---|---|
 | 0 | success | - |
 | 2 | invalid arguments, or no target workspace | Fix the arguments from `error`. Do not retry unchanged. |
-| 3 | not signed in, or the session expired | Run `taskdoor auth list` to see which server the active login is for, then sign in to **that** server again with `taskdoor login --server <origin> --device-auth`. Never run a bare `taskdoor login` unless the server is TaskDoor itself: it would sign in to production. |
+| 3 | not signed in, or the session expired | Sign in to **the same server** again, as in Setup: `error.details.action` gives the command (`taskdoor login --server <origin>`); without it, `taskdoor auth list` shows the active login's server. Never run a bare `taskdoor login` unless the server is TaskDoor itself: it would sign in to production. |
 | 4 | no permission, or not visible | Tell the person. Do not look for a way around it. |
 | 5 | network or server error | If the outcome may have happened, read first. Retry at most twice. |
 | 6 | conflict or precondition failed | Get the item again, show the person what changed, then decide. |
