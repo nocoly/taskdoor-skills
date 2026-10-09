@@ -8,9 +8,10 @@ description: Use when setting up or using the TaskDoor CLI to read, create, upda
 TaskDoor is reached through the `taskdoor` command-line tool. This skill says how to set it up, how to find
 the right command and how to act safely. The commands themselves are described by `taskdoor --help`.
 
-When `taskdoor-create-task` is installed and TaskDoor MCP is already connected, use it for task
-decomposition and responsibility matching through MCP. That workflow does not require installing or
-signing in to the CLI.
+When `taskdoor-create-task` is installed, use it to generate editable task proposals with decomposition
+and responsibility matching. The application provides the current member directory and context; the
+proposal skill does not require installing or signing in to the CLI and does not create tasks. The
+application executes the final edited proposal only after the user confirms it.
 
 ## Setup
 
