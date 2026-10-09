@@ -19,6 +19,8 @@ For a private or sandbox deployment, add `--server <origin>` to `taskdoor login`
 
 - [`taskdoor`](skills/taskdoor/SKILL.md): set up the CLI, find commands with `taskdoor --help`, read exit
   codes, and act safely on shared tasks.
+- [`taskdoor-mcp`](skills/taskdoor-mcp/SKILL.md): configure remote TaskDoor MCP in an AI client with a
+  personal access token, preserve existing servers, and verify the connection without requiring the CLI.
 - [`taskdoor-create-task`](skills/taskdoor-create-task/SKILL.md): turn a user's request into tasks and
   subtasks, assign owners from confirmed team responsibilities, and create and verify them through an
   already connected TaskDoor MCP. Requires that MCP connection; does not require the CLI.
