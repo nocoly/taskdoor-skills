@@ -1,11 +1,61 @@
 ---
 name: taskdoor-mcp
-description: Use when configuring a remote TaskDoor MCP server in an AI client, signing in through the browser where the client supports MCP authorization, or with the person's access token otherwise. Does not require installing or signing in to the TaskDoor CLI.
+description: Use when connecting an AI client to TaskDoor through remote MCP, or using connected TaskDoor tools to read tasks, discuss work, handle files and follow up with subtasks. Does not require the TaskDoor CLI.
 ---
 
 # TaskDoor MCP
 
-Connect the person's AI client to TaskDoor through remote MCP. Preserve existing MCP servers and use the client's supported configuration format. This setup does not require the TaskDoor CLI.
+Connect the person's AI client to TaskDoor through remote MCP and use the connected tools for everyday
+collaboration. Preserve existing MCP servers and use the client's supported configuration format.
+Neither setup nor task collaboration requires the TaskDoor CLI.
+
+## Follow up during everyday collaboration
+
+When reading a task, summarizing or replying to discussion, or handling files, finish the person's
+request and notice concrete, unresolved matters that need continued ownership or a separately
+checkable result. A subtask can track such a question, fix or request under the current task; the
+person need not first say "decompose this task" or choose between Issue and task.
+
+Use these rules directly; everyday follow-up does not require another skill:
+
+- Check the relevant latest discussion and existing tasks, including completed or cancelled work.
+  Compare actual scope and source context, not titles alone. Suggest only uncovered work; do not
+  recreate it merely because an earlier task is complete or cancelled. Incomplete or failed reads
+  mean coverage is unknown, not that no task exists.
+- Stay with the current task, its direct children for coverage, and necessary parent constraints.
+  Read another branch only when explicitly related. Relevant new discussion may add a matter without
+  invalidating unrelated suggestions. Do not scan the whole task tree.
+- Keep one matter together; split only independently owned work or outcomes. Ordinary conversation,
+  progress reports, resolved or withdrawn matters, and questions answered in the current reply need
+  no new task. Without new relevant facts, do not repeat an ignored suggestion.
+- Offer a short, specific title and an owner named in context or supported by relevant responsibilities;
+  resolve that person to a current workspace member ID. Unknown ownership stays unassigned. Goals,
+  completion criteria, dates and effort are optional; do not require a planning form for a small issue.
+- Reading, replying or uploading does not authorize an extra task. Briefly propose the specific
+  follow-up and wait for agreement. If the person already explicitly requested that creation, execute
+  within the request without asking again.
+- Before creating, recheck latest discussion, existing coverage, permissions and members. Do not act
+  on a stale suggestion if new replies resolved, withdrew or changed it. Return the real task ID or
+  link and source context after success; do not automatically post back to discussion or claim page
+  references or suggestions synchronized.
+
+If installed, `taskdoor-decompose-task` can help with detailed or structured decomposition. It only
+returns suggestions. Its absence is not a limitation on the everyday guidance above and needs no
+installation warning for a straightforward follow-up. The MCP connection itself does not subscribe
+to events or run background analysis; recheck relevant facts during the current interaction.
+
+For example, after a summary: "The export footnotes still need one consistent label, and no existing
+task covers it. Create ‘Standardize export footnotes’ under this task for the confirmed owner?"
+
+Discover the available read and creation tools and inspect their schemas. Read all relevant pages,
+resolve current workspace member IDs, and create under the current parent task using supported fields.
+Keep an unknown owner unassigned using the tool's documented representation; do not silently accept a
+default assignment to the caller. If the available tool requires missing information or cannot leave
+an owner unassigned, explain that limit rather than inventing data or switching transports. A failed
+or uncertain write is not a creation receipt: read back before retrying and reuse the same idempotency
+key if the tool supports one. `taskdoor-create-task`, if installed, generates editable planning
+proposals for the application; it is not required for this lightweight follow-up and never executes
+the write.
 
 ## Service address
 
