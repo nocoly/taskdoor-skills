@@ -1,6 +1,6 @@
 ---
 name: taskdoor
-description: Use when setting up or using the TaskDoor CLI to read, create, update or discuss tasks, subtasks, comments, files or notifications in a team's workspace.
+description: Use when setting up or using the TaskDoor CLI to read, create, update or discuss tasks, handle files or notifications, and follow up on concrete issues with subtasks in a team's workspace.
 ---
 
 # TaskDoor
@@ -8,10 +8,53 @@ description: Use when setting up or using the TaskDoor CLI to read, create, upda
 TaskDoor is reached through the `taskdoor` command-line tool. This skill says how to set it up, how to find
 the right command and how to act safely. The commands themselves are described by `taskdoor --help`.
 
-When `taskdoor-create-task` is installed, use it to generate editable task proposals with decomposition
-and responsibility matching. The application provides the current member directory and context; the
-proposal skill does not require installing or signing in to the CLI and does not create tasks. The
-application executes the final edited proposal only after the user confirms it.
+Use `taskdoor-create-task` for an editable planning proposal when that is what the person needs. It
+outputs a proposal for the application; it does not create tasks. A concrete follow-up from an existing
+task's discussion can use the CLI directly, without that planning flow.
+
+## Follow up during everyday collaboration
+
+When reading a task, summarizing or replying to discussion, or handling files, finish the person's
+request and notice concrete, unresolved matters that need continued ownership or a separately
+checkable result. A subtask can track such a question, fix or request under the current task; the
+person need not first say "decompose this task" or choose between Issue and task.
+
+Use these rules directly; everyday follow-up does not require another skill:
+
+- Check the relevant latest discussion and existing tasks, including completed or cancelled work.
+  Compare actual scope and source context, not titles alone. Suggest only uncovered work; do not
+  recreate it merely because an earlier task is complete or cancelled. Incomplete or failed reads
+  mean coverage is unknown, not that no task exists.
+- Stay with the current task, its direct children for coverage, and necessary parent constraints.
+  Read another branch only when explicitly related. Relevant new discussion may add a matter without
+  invalidating unrelated suggestions. Do not scan the whole task tree.
+- Keep one matter together; split only independently owned work or outcomes. Ordinary conversation,
+  progress reports, resolved or withdrawn matters, and questions answered in the current reply need
+  no new task. Without new relevant facts, do not repeat an ignored suggestion.
+- Offer a short, specific title and an owner named in context or supported by relevant responsibilities;
+  resolve that person to a current workspace member ID. Unknown ownership stays unassigned. Goals,
+  completion criteria, dates and effort are optional; do not require a planning form for a small issue.
+- Reading, replying or uploading does not authorize an extra task. Briefly propose the specific
+  follow-up and wait for agreement. If the person already explicitly requested that creation, execute
+  within the request without asking again.
+- Before creating, recheck latest discussion, existing coverage, permissions and members. Do not act
+  on a stale suggestion if new replies resolved, withdrew or changed it. Return the real task ID or
+  link and source context after success; do not automatically post back to discussion or claim page
+  references or suggestions synchronized.
+
+If installed, `taskdoor-decompose-task` can help with detailed or structured decomposition. It only
+returns suggestions. Its absence is not a limitation on the everyday guidance above and needs no
+installation warning for a straightforward follow-up. The CLI connection itself does not subscribe
+to events or run background analysis; recheck relevant facts during the current interaction.
+
+For example, after a summary: "The export footnotes still need one consistent label, and no existing
+task covers it. Create ‘Standardize export footnotes’ under this task for the confirmed owner?"
+
+Discover `taskdoor task list`, `taskdoor task comment list` and `taskdoor task create` with `--help`.
+Read all relevant pages; use `--parent` for subtasks and the current workspace/profile explicitly.
+Resolve a named owner to a current workspace member ID. The CLI defaults the owner to the caller, so
+use `--owner none` when ownership is unknown. A failed or uncertain write is not a creation receipt:
+read back before retrying, and reuse the same idempotency key when retrying the same creation.
 
 ## Setup
 
