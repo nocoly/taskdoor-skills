@@ -1,13 +1,13 @@
-# TaskDoor skills
+# Taskdoor skills
 
-Agent skills for TaskDoor. Each skill is an independent directory under `skills/`,
+Agent skills for Taskdoor. Each skill is an independent directory under `skills/`,
 with its own `SKILL.md` and the references it needs.
 
 ## Install
 
     npx skills add nocoly/taskdoor-skills -g -y
 
-The `taskdoor` CLI skill expects the TaskDoor CLI ([`@taskdoor/cli`](https://www.npmjs.com/package/@taskdoor/cli), source at
+The `taskdoor` CLI skill expects the Taskdoor CLI ([`@taskdoor/cli`](https://www.npmjs.com/package/@taskdoor/cli), source at
 [nocoly/taskdoor-cli](https://github.com/nocoly/taskdoor-cli)):
 
     npm install -g @taskdoor/cli
@@ -19,12 +19,12 @@ For a private or sandbox deployment, add `--server <origin>` to `taskdoor login`
 
 - [`taskdoor`](skills/taskdoor/SKILL.md): set up the CLI, find commands with `taskdoor --help`, read exit
   codes, and act safely on shared tasks.
-- [`taskdoor-mcp`](skills/taskdoor-mcp/SKILL.md): configure remote TaskDoor MCP in an AI client, signing
+- [`taskdoor-mcp`](skills/taskdoor-mcp/SKILL.md): configure remote Taskdoor MCP in an AI client, signing
   in through the browser where the client supports MCP authorization or with a personal access token
   otherwise, preserve existing servers, and verify the connection without requiring the CLI.
 - [`taskdoor-create-task`](skills/taskdoor-create-task/SKILL.md): turn a user's request into tasks and
   subtasks, assign owners from confirmed team responsibilities, and create and verify them through an
-  already connected TaskDoor MCP. Requires that MCP connection; does not require the CLI.
+  already connected Taskdoor MCP. Requires that MCP connection; does not require the CLI.
 - [`taskdoor-discussion-subtask`](skills/taskdoor-discussion-subtask/SKILL.md): prepare one direct subtask
   from a selected discussion or from a request submitted in the subtask list. The application provides
   the parent task context and handles confirmation and saving.

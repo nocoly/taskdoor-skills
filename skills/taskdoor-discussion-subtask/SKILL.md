@@ -1,6 +1,6 @@
 ---
 name: taskdoor-discussion-subtask
-description: 用于 TaskDoor 中用户选中一条讨论，或在已保存任务的子任务列表提交一项需求时，生成一个直属子任务。
+description: 用于 Taskdoor 中用户选中一条讨论，或在已保存任务的子任务列表提交一项需求时，生成一个直属子任务。
 ---
 
 # 生成一个直属子任务
