@@ -20,8 +20,10 @@ application executes the final edited proposal only after the user confirms it.
     taskdoor whoami
 
 Sign in to the server the person uses: `<origin>` is the address of the setup page they gave you (keeping
-`--server` is right for TaskDoor itself too). Run login so that you can wait for it: it waits up to five
-minutes for the person and then exits by itself.
+`--server` is right for TaskDoor itself too). Login waits up to five minutes for the person and then exits by
+itself; the address and code it shows stop working at that time. Give it that long: run it in the foreground with
+a command timeout of at least 330 seconds, or in the background and read its output while it waits. A login that
+is stopped early never saves the approval.
 
 - **In a browser (the default).** `taskdoor login --server <origin>` opens the person's browser at the
   TaskDoor sign-in page and prints that address after `Authorize your TaskDoor account at:`. Show the address
@@ -33,11 +35,24 @@ minutes for the person and then exits by itself.
   `taskdoor login --server <origin> --device-auth`. It prints an address and a short code: show both exactly
   as printed, each in a code block of its own; the person opens the address on any device and enters the code.
 
-Do not change the address, and do not run login again if it fails or times out: report what it printed.
-Where this computer's keyring cannot keep the login (no desktop session, your own sandbox, access refused), login
-saves it to a protected file instead and says so: pass the notice on to the person; nothing else is needed. If login
-itself still stops with `KEYRING_UNAVAILABLE` (an older taskdoor, or the keyring was chosen), tell the person, then run
-the same login once more with `--credential-store file` added.
+Show the address and code once, exactly as printed, and say that they work for five minutes. Do not change the
+address. Run one login at a time, and never start another on your own:
+
+- Login stopped with `expired_token`, `access_denied` or `LOGIN_CANCELLED`: nothing was saved. Tell the person,
+  ask whether they are ready, and only then start exactly one new login. Say that it shows a new code and that
+  the old one no longer works.
+- Login stopped with any other error, even after the person approved: stop and tell the person what it printed.
+  Run it again only after they agree, and say that a new code or page is coming.
+- Where this computer's keyring cannot keep the login (no desktop session, your own sandbox, access refused), login
+  saves it to a protected file instead and says so: pass the notice on to the person; nothing else is needed. If
+  login itself still stops with `KEYRING_UNAVAILABLE` (an older taskdoor, or the keyring was chosen), tell the
+  person and, once they agree, run the same login once more with `--credential-store file` added.
+
+Sign in only through `taskdoor login`. Never call TaskDoor's sign-in addresses (`/auth/cli/...`, the token or
+device endpoints) yourself with curl, a script or any other HTTP tool, and never read, copy or reuse a device
+code, token or credential file of the CLI: a code redeemed outside login is lost to it, and the person has to
+approve again.
+
 When another command stops with `KEYRING_UNAVAILABLE`, the person is signed in but the login is in a keyring you cannot
 reach: do not log in again. Ask the person to run `taskdoor auth store file` once in their own terminal (outside the
 agent), then retry.
@@ -53,6 +68,9 @@ Do not guess commands or options. Look them up:
     taskdoor <group> --help
     taskdoor <group> <command> --help
 
+When you know your own product name and version, set `TASKDOOR_AGENT="<product name>/<version>"` (for example
+`TASKDOOR_AGENT="Claude Code/2.1.0"`) for every taskdoor command, so TaskDoor can show which agent wrote a comment.
+
 Always add `--json` and read the result from stdout. Most commands work in one workspace: run
 `taskdoor workspace list`, then `taskdoor workspace use <id>`, or pass `--workspace <id>` to each command.
 
@@ -64,7 +82,7 @@ Errors are JSON on stderr; the `error` object has the code and message.
 |---|---|---|
 | 0 | success | - |
 | 2 | invalid arguments, or no target workspace | Fix the arguments from `error`. Do not retry unchanged. |
-| 3 | not signed in, or the session expired | Sign in to **the same server** again, as in Setup: `error.details.action` gives the command (`taskdoor login --server <origin>`); without it, `taskdoor auth list` shows the active login's server. Never run a bare `taskdoor login` unless the server is TaskDoor itself: it would sign in to production. |
+| 3 | not signed in, or the session expired | First run `taskdoor config path` and `taskdoor auth list --json`: a login made in another terminal, app or sandbox is not shared with this one, since each uses its own configuration directory. Tell the person that this environment needs its own sign-in, then sign in once to **the same server**, as in Setup: `error.details.action` gives the command (`taskdoor login --server <origin>`); without it, ask the person for the server. Never run a bare `taskdoor login` unless the server is TaskDoor itself: it would sign in to production. When `taskdoor login` itself exits 3, follow the login rules in Setup instead. |
 | 4 | no permission, or not visible | Tell the person. Do not look for a way around it. |
 | 5 | network or server error | If the outcome may have happened, read first. Retry at most twice. |
 | 6 | conflict or precondition failed | Get the item again, show the person what changed, then decide. |
