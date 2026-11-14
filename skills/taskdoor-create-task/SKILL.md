@@ -15,6 +15,7 @@ description: 在 Taskdoor 中将自然语言需求整理为可编辑的任务方
 
 - `userRequest`：用户原话；`requestId`：本次请求 ID，原样回显。
 - `currentDate` / `timezone`：当前日期与时区，用于换算相对截止日期。
+- `teamTags`：可选。调用方读取的当前团队标签目录，活动项包含 `id`、`name`、`icon` 和 `color`。未提供时保留标签建议为空。
 - `members`：当前团队有效成员列表，结构为 `[{id, name, responsibilities: string[]}]`；这是运行时输入，不是固定名单。
 - `currentMemberId`：当前用户的团队成员 ID，用于解析“我负责”；未知为 `null`。
 - `locale`：界面语言，`zh-CN` 或 `en`。
@@ -78,6 +79,8 @@ description: 在 Taskdoor 中将自然语言需求整理为可编辑的任务方
 ## 用户修改与输出
 
 前端可直接修改树和所有业务字段。再次调用时，以传入的当前方案及本轮修改为基础；保留用户已编辑的内容，只有明确要求重新规划的部分才重算。稳定节点保持 `clientId`；新增节点生成新 ID；删除节点后清理相关依赖。不要恢复被用户删除的任务，不能无解释替换点名人员、日期、标准或估算。
+
+创建或调整方案时，按[团队标签建议](references/team-task-tags.md)核对 `teamTags`，优先推荐已有活动标签。确有可复用分类缺口时，从[标签外观库](references/tag-appearance.json)选图标和颜色，拟一个新标签供用户采纳。输出遵循当前预览协议。用户确认后的任务和标签写入由应用执行。
 
 返回一个符合 Schema 的 JSON 对象。只输出 Schema 规定的字段，不增加 notes、tasks_note、分析过程或旁路元数据。所有层级的 ownerMemberId 和 participants[].memberId 都复制 members[].id，名称只用于匹配，不能写进 ID 字段；即使姓名清晰且唯一，也不能代替该成员项的 id。`tasks` 是根节点数组，支持多根、多层；所有根节点和子节点的 `clientId` 在整个方案中唯一，例如总任务 `draft-root`、子任务 `draft-copy`、`draft-poster`，不能给父子节点复用同一 ID。使用临时 `clientId`，不返回伪造的真实任务 ID、状态、创建回执或成功数量。未明确的可选字段按约定返回 `null` 或空数组。输出前整体检查一次：用户排除的工作没有进入目标、标准或建议；数量等硬要求落在具体任务中；各节点 ID 唯一、标准属于自身交付、真实前置结果有依赖；人员 ID 与估算字段符合约定。避免反复重写同一方案。
 
